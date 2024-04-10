@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="60.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="60.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.blackjack.HelloController">
    <children>
       <Arc fx:id="table" centerX="150.0" centerY="150.0" fill="#109424" length="180.0" radiusX="300.0" radiusY="300.0" startAngle="180.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
