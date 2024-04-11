@@ -30,26 +30,19 @@ public class Server {
         });
         t.setDaemon(true);
         t.start();
-        for(int i = 2; i < 11; i++){
-            for (int j = 0; j < "CDHS".split("").length; j++){
-                cards.push(i + "" + "CDHS".split("")[j]);
+        for(int x = 0; x < 6; x++) {
+            for (int i = 2; i < 11; i++) {
+                for (int j = 0; j < "CDHS".split("").length; j++) {
+                    cards.push(i + "" + "CDHS".split("")[j]);
+                }
+            }
+            for (int i = 0; i < "JQKA".split("").length; i++) {
+                for (int j = 0; j < "CDHS".split("").length; j++) {
+                    cards.push("JQKA".split("")[i] + "" + "CDHS".split("")[j]);
+                }
             }
         }
-        for (int i = 0; i < "JQKA".split("").length; i++){
-            for (int j = 0; j < "CDHS".split("").length; j++){
-                cards.push("JQKA".split("")[i]  + "" + "CDHS".split("")[j]);
-            }
-        }
-
-        /*for (int i = 0; i < cards.size(); i++){
-            System.out.println(cards.get(i));
-        }*/
-
         Collections.shuffle(cards);
-
-        /*for (int i = 0; i < cards.size(); i++){
-            System.out.println(cards.get(i));
-        }*/
     }
 
     private void send(String s, int index){

@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 public class HelloController {
 
     public void initialize(){
-        //Server s = new Server();
+        Server s = new Server();
     }
 
     public void onHitClick(ActionEvent actionEvent) {
