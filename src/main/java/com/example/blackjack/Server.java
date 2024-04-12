@@ -3,14 +3,18 @@ package com.example.blackjack;
 import javafx.application.Platform;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 
 public class Server {
 
     private DatagramSocket socket;
-    private ArrayList<Client> clients = new ArrayList<Client>();
+    private ArrayList<Client> clients = new ArrayList<>();
+    private Stack<String> cards = new Stack<>();
 
     public Server() {
         try {
@@ -26,6 +30,19 @@ public class Server {
         });
         t.setDaemon(true);
         t.start();
+        for(int x = 0; x < 6; x++) {
+            for (int i = 2; i < 11; i++) {
+                for (int j = 0; j < "CDHS".split("").length; j++) {
+                    cards.push(i + "" + "CDHS".split("")[j]);
+                }
+            }
+            for (int i = 0; i < "JQKA".split("").length; i++) {
+                for (int j = 0; j < "CDHS".split("").length; j++) {
+                    cards.push("JQKA".split("")[i] + "" + "CDHS".split("")[j]);
+                }
+            }
+        }
+        Collections.shuffle(cards);
     }
 
     private void send(String s, int index){
@@ -62,6 +79,10 @@ public class Server {
         c.ip = ip;
         c.port = port;
         clients.add(c);
+        if (message.equals("Kártya?")) {
+            String s = String.format("%s;%s", cards.pop(), cards.pop());
+            send(s, clients.indexOf(c));
+        }
     }
 
 }
