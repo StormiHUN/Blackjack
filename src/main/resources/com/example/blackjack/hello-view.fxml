@@ -79,10 +79,10 @@
             </VBox>
             <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onHitClick" prefWidth="50.0" text="Hit" />
-                  <Button mnemonicParsing="false" onAction="#onStandClick" prefWidth="50.0" text="Stand" />
-                  <Button mnemonicParsing="false" onAction="#onAllInClick" prefWidth="50.0" style="-fx-background-color: red;" text="All in" textFill="WHITE" />
-                  <Button mnemonicParsing="false" onAction="#onLeaveClick" prefWidth="50.0" text="Leave" />
+                  <Button fx:id="clientButton" mnemonicParsing="false" onAction="#onHitClick" prefWidth="50.0" text="Hit" />
+                  <Button fx:id="clientButton" mnemonicParsing="false" onAction="#onStandClick" prefWidth="50.0" text="Stand" />
+                  <Button fx:id="clientButton" mnemonicParsing="false" onAction="#onAllInClick" prefWidth="50.0" style="-fx-background-color: red;" text="All in" textFill="WHITE" />
+                  <Button fx:id="clientButton" mnemonicParsing="false" onAction="#onLeaveClick" prefWidth="50.0" text="Leave" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
