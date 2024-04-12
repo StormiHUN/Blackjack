@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="60.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="60.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.blackjack.HelloController">
    <children>
       <Arc fx:id="table" centerX="150.0" centerY="150.0" fill="#109424" length="180.0" radiusX="300.0" radiusY="300.0" startAngle="180.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
@@ -77,10 +77,11 @@
                   </Label>
                </children>
             </VBox>
-            <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button mnemonicParsing="false" onAction="#onHitClick" prefWidth="50.0" text="Hit" />
                   <Button mnemonicParsing="false" onAction="#onStandClick" prefWidth="50.0" text="Stand" />
+                  <Button mnemonicParsing="false" onAction="#onAllInClick" prefWidth="50.0" style="-fx-background-color: red;" text="All in" textFill="WHITE" />
                   <Button mnemonicParsing="false" onAction="#onLeaveClick" prefWidth="50.0" text="Leave" />
                </children>
                <HBox.margin>
@@ -106,6 +107,7 @@
                      </VBox.margin>
                   </TextField>
                   <RadioButton mnemonicParsing="false" text="Server" toggleGroup="$modes" />
+                  <Label alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Zsidorián és András Bt. ©" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </children>
