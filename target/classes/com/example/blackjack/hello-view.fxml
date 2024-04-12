@@ -77,11 +77,12 @@
                   </Label>
                </children>
             </VBox>
-            <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" onAction="#onHitClick" prefWidth="50.0" text="Hit" />
-                  <Button mnemonicParsing="false" onAction="#onStandClick" prefWidth="50.0" text="Stand" />
-                  <Button mnemonicParsing="false" onAction="#onLeaveClick" prefWidth="50.0" text="Leave" />
+                  <Button fx:id="hitButton" mnemonicParsing="false" onAction="#onHitClick" prefWidth="50.0" text="Hit" />
+                  <Button fx:id="standButton" mnemonicParsing="false" onAction="#onStandClick" prefWidth="50.0" text="Stand" />
+                  <Button fx:id="allInButton" mnemonicParsing="false" onAction="#onAllInClick" prefWidth="50.0" style="-fx-background-color: red;" text="All in" textFill="WHITE" />
+                  <Button fx:id="leaveButton" mnemonicParsing="false" onAction="#onLeaveClick" prefWidth="50.0" text="Leave" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
@@ -105,7 +106,8 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </TextField>
-                  <RadioButton mnemonicParsing="false" text="Server" toggleGroup="$modes" />
+                  <RadioButton fx:id="isServer" mnemonicParsing="false" text="Server" toggleGroup="$modes" />
+                  <Label alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Zsidorián és András Bt. ©" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </children>
