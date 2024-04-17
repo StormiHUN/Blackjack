@@ -12,7 +12,6 @@ public class Client {
     public int port;
     int money;
     public String card;
-    public int money;
     String color;
 
     Thread reciveThread;
@@ -55,7 +54,10 @@ public class Client {
 
     public void onFogad(String got){
             String[] msg = got.split(":");
+            if (msg[0].equals("joined")){
+                money = 500;
 
+            }
     }
 
     public void send(byte[] adat){
