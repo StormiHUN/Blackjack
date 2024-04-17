@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class Client {
 
@@ -13,6 +14,11 @@ public class Client {
     int money;
     public String card;
     String color;
+    String lastCommand = "";
+    int players = 1;
+
+    String knownCard = "";
+    ArrayList<String> cards = new ArrayList<String>();
 
     Thread reciveThread;
     DatagramSocket socket;
@@ -53,11 +59,21 @@ public class Client {
     }
 
     public void onFogad(String got){
-            String[] msg = got.split(":");
-            if (msg[0].equals("joined")){
-                money = 500;
-
-            }
+        String[] msg = got.split(":");
+        lastCommand = msg[0];
+        if (msg[0].equals("joined")){
+            money = 500;
+        }if(msg[0].equals("start")){
+            cards.clear();
+            knownCard = "";
+            players = Integer.parseInt(msg[1]);
+        }if(msg[0].equals("paid")){
+            money = Integer.parseInt(msg[1]);
+        }if(msg[0].equals("s")){
+            knownCard = msg[1];
+        }if(msg[0].equals("k")){
+            cards.add(msg[1]);
+        }
     }
 
     public void send(byte[] adat){

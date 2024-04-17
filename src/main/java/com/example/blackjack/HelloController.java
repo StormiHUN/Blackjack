@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -29,8 +31,8 @@ public class HelloController {
     Server dealer = null;
     Client player = null;
 
-    int[] posX = {300, 300};
-    int[] posY = {0, 300};
+    int[] posX = {300, 300, 200, 100, 400, 500};
+    int[] posY = {000, 300, 200, 100, 200, 300};
 
     public String getColor(ColorPicker color){
         return String.format("#%02x%02x%02x",(int)(color.getValue().getRed()*255),(int)(color.getValue().getGreen()*255),(int)(color.getValue().getBlue()*255));
@@ -58,17 +60,71 @@ public class HelloController {
 
     }
 
+
+    public void refreshScreen(){
+        String com = player.lastCommand;
+        if (com.equals("joined")){
+
+        }if(com.equals("start")){
+            if(player.players > 1){
+                for(int i = 2; i < player.players; i++){
+                    makeCircle(i,"#000000");
+                    ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
+                    card.setX(posX[i]);
+                    card.setY(posY[i]);
+                    card.setRotate(30);
+                    card.setFitHeight(60);
+                    card.setFitWidth(30);
+                    pane.getChildren().add(card);
+                    card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
+                    card.setX(posX[i]);
+                    card.setY(posY[i]);
+                    card.setRotate(-30);
+                    card.setFitHeight(60);
+                    card.setFitWidth(30);
+                    pane.getChildren().add(card);
+                }
+            }
+        }if(com.equals("paid")){
+            bank.setText(player.money+"");
+        }if(com.equals("s")){
+            ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.knownCard+".png")));
+            card.setX(posX[0]-20);
+            card.setY(posY[0]+40);
+            card.setFitHeight(60);
+            card.setFitWidth(30);
+            pane.getChildren().add(card);
+            card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
+            card.setX(posX[0]+20);
+            card.setY(posY[0]+40);
+            card.setFitHeight(60);
+            card.setFitWidth(30);
+            pane.getChildren().add(card);
+        }if(com.equals("k")){
+            for(int i = 0; i < player.cards.size(); i++){
+                ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.cards.get(i)+".png")));
+                card.setX(posX[1]);
+                card.setY(posY[1]);
+                card.setFitHeight(60);
+                card.setFitWidth(30);
+                card.setRotate(30*i);
+                pane.getChildren().add(card);
+            }
+        }
+    }
+
     public void stake5() {
         if(isClient.isSelected()){
             player.stake(5);
         }
-
+        refreshScreen();
     }
 
     public void stake25() {
         if(isClient.isSelected()){
             player.stake(25);
         }
+        refreshScreen();
 
     }
 
@@ -76,6 +132,7 @@ public class HelloController {
         if(isClient.isSelected()){
             player.stake(50);
         }
+        refreshScreen();
 
     }
 
@@ -83,6 +140,7 @@ public class HelloController {
         if(isClient.isSelected()){
             player.stake(100);
         }
+        refreshScreen();
 
     }
 
@@ -90,6 +148,7 @@ public class HelloController {
         if(isClient.isSelected()){
             player.hit();
         }
+        refreshScreen();
 
     }
 
@@ -97,6 +156,7 @@ public class HelloController {
         if (isClient.isSelected()){
             player.stand();
         }
+        refreshScreen();
 
     }
 
@@ -104,6 +164,7 @@ public class HelloController {
         if (isClient.isSelected()){
             player.leave();
         }
+        refreshScreen();
 
     }
 
@@ -111,6 +172,7 @@ public class HelloController {
         if(isClient.isSelected()){
             player.stake(player.money);
         }
+        refreshScreen();
     }
 
     public void onRadioClick() {
@@ -124,6 +186,7 @@ public class HelloController {
             hitButton.setDisable(false);
             allInButton.setDisable(false);
             serverIp.setDisable(false);
+            refreshScreen();
 
         }else{
 
