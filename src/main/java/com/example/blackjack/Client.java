@@ -10,6 +10,7 @@ public class Client {
 
     String serverIP = "";
     public int port;
+    int money;
     public String card;
     public int money;
     String color;
