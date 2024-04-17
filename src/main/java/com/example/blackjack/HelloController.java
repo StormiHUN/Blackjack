@@ -116,7 +116,8 @@ public class HelloController {
     public void onRadioClick() {
         if (isClient.isSelected()){
 
-            player = new Client(serverIp.getText());
+            player = new Client();
+            player.setServerIP(serverIp.getText());
             dealer = null;
 
             standButton.setDisable(false);

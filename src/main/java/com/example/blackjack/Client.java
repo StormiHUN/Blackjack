@@ -1,12 +1,14 @@
 package com.example.blackjack;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class Client {
 
-    String serverIP;
+    String serverIP = "";
     public int port;
     public String card;
     public int money;
@@ -16,8 +18,7 @@ public class Client {
     DatagramSocket socket;
 
 
-    public Client(String serverIP){
-        this.serverIP = serverIP;
+    public Client(){
         try {
             socket = new DatagramSocket(678);
         } catch (SocketException e) {
@@ -30,10 +31,29 @@ public class Client {
             }
         });
         byte[] adat = ("join:500").getBytes(StandardCharsets.UTF_8);
+        send(adat);
+    }
 
+    public void setServerIP(String targetIP){
+        serverIP = targetIP;
     }
 
     public void fogad(){
+        try{
+            while (true){
+                byte[] adat = new byte[256];
+                DatagramPacket recived = new DatagramPacket(adat, adat.length);
+                socket.receive(recived);
+                String msg = new String(adat,0,recived.getLength(),"utf-8");
+                Platform.runLater(() -> onFogad(msg));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void onFogad(String got){
+            String[] msg = got.split(":");
 
     }
 
