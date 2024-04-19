@@ -117,6 +117,7 @@
                      </value>
                   </ColorPicker>
                   <Button mnemonicParsing="false" onAction="#onJoinClick" text="Join" />
+                  <TextField fx:id="startmoney" promptText="starting money" text="1000" />
                </children>
                <HBox.margin>
                   <Insets top="10.0" />
