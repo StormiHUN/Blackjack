@@ -16,6 +16,7 @@ public class Client {
     String color;
     String lastCommand = "";
     int players = 1;
+    boolean needRefresh = false;
 
     String knownCard = "";
     ArrayList<String> cards = new ArrayList<String>();
@@ -42,6 +43,7 @@ public class Client {
 
     public void join(String startmoney){
         byte[] adat = ("join:"+startmoney).getBytes(StandardCharsets.UTF_8);
+        cards.clear();
         send(adat);
     }
 
@@ -67,6 +69,7 @@ public class Client {
         System.out.printf(got+"\n");
         String[] msg = got.split(":");
         lastCommand = msg[0];
+        needRefresh = true;
         if (msg[0].equals("joined")){
             money = Integer.parseInt(msg[1]);
         }if(msg[0].equals("start")){
@@ -79,6 +82,7 @@ public class Client {
             knownCard = msg[1];
         }if(msg[0].equals("k")){
             cards.add(msg[1]);
+            //cards.add(msg[1].split("")[1]+msg[1].split("")[0]);
         }
     }
 
@@ -98,6 +102,7 @@ public class Client {
     }
 
     public void stake(int bet){
+        money-=bet;
         byte[] adat = ("bet:"+bet).getBytes(StandardCharsets.UTF_8);
         send(adat);
     }

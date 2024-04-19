@@ -1,5 +1,6 @@
 package com.example.blackjack;
 
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -60,18 +61,41 @@ public class HelloController {
 
         }
 
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                refreshScreen();
+            }
+        };
+        timer.start();
+
     }
 
 
     public void refreshScreen(){
+        if(!player.needRefresh) return;
+        player.needRefresh = false;
         String com = player.lastCommand;
         if (com.equals("joined")){
             bank.setText(player.money+"");
         }if(com.equals("start")){
+            makeCircle(0,"#000000");
+            ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.knownCard+".png")));
+            card.setX(posX[0]-30);
+            card.setY(posY[0]+120);
+            card.setFitHeight(120);
+            card.setFitWidth(60);
+            pane.getChildren().add(card);
+            card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
+            card.setX(posX[0]+30);
+            card.setY(posY[0]+120);
+            card.setFitHeight(120);
+            card.setFitWidth(60);
+            pane.getChildren().add(card);
             if(player.players > 1){
                 for(int i = 2; i < player.players; i++){
                     makeCircle(i,"#000000");
-                    ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
+                    card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
                     card.setX(posX[i]);
                     card.setY(posY[i]);
                     card.setRotate(30);
@@ -105,11 +129,11 @@ public class HelloController {
         }if(com.equals("k")){
             for(int i = 0; i < player.cards.size(); i++){
                 ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.cards.get(i)+".png")));
-                card.setX(posX[1]);
-                card.setY(posY[1]);
-                card.setFitHeight(60);
-                card.setFitWidth(30);
-                card.setRotate(30*i);
+                card.setX(-40+posX[1]+20*i);
+                card.setY(posY[1]-100);
+                card.setFitHeight(120);
+                card.setFitWidth(60);
+                //card.setRotate(40*i);
                 pane.getChildren().add(card);
             }
         }
