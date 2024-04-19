@@ -27,8 +27,8 @@ public class HelloController {
     public VBox main;
     public Pane pane;
     public ColorPicker clientColor;
+    public TextField startmoney;
 
-    Server dealer = null;
     Client player = null;
 
     int[] posX = {300, 300, 200, 100, 400, 500};
@@ -50,8 +50,10 @@ public class HelloController {
 
     public void initialize(){
 
-        onRadioClick();
         pane.getChildren().add(makeCircle(0,"#000000"));
+        player = new Client();
+        player.setServerIP(serverIp.getText());
+
         if(player != null){
             System.out.printf(getColor(clientColor));
             pane.getChildren().add(makeCircle(1,getColor(clientColor)));
@@ -64,7 +66,7 @@ public class HelloController {
     public void refreshScreen(){
         String com = player.lastCommand;
         if (com.equals("joined")){
-
+            bank.setText(player.money+"");
         }if(com.equals("start")){
             if(player.players > 1){
                 for(int i = 2; i < player.players; i++){
@@ -175,35 +177,16 @@ public class HelloController {
         refreshScreen();
     }
 
-    public void onRadioClick() {
-        if (isClient.isSelected()){
-
-            player = new Client();
-            player.setServerIP(serverIp.getText());
-            dealer = null;
-
-            standButton.setDisable(false);
-            hitButton.setDisable(false);
-            allInButton.setDisable(false);
-            serverIp.setDisable(false);
-            refreshScreen();
-
-        }else{
-
-            dealer = new Server();
-            player = null;
-
-            standButton.setDisable(true);
-            hitButton.setDisable(true);
-            allInButton.setDisable(true);
-            serverIp.setDisable(true);
-        }
-
-    }
 
     public void onSzinClick() {
         pane.getChildren().remove(pane.getChildren().size()-1);
         pane.getChildren().add(makeCircle(1,getColor(clientColor)));
         player.changeColor(getColor(clientColor));
+    }
+
+    public void onJoinClick() {
+        player.setServerIP(serverIp.getText());
+        player.join(startmoney.getText());
+
     }
 }

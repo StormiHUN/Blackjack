@@ -20,8 +20,8 @@ public class Client {
     String knownCard = "";
     ArrayList<String> cards = new ArrayList<String>();
 
-    Thread reciveThread;
-    DatagramSocket socket;
+    Thread reciveThread = null;
+    DatagramSocket socket = null;
 
 
     public Client(){
@@ -36,7 +36,12 @@ public class Client {
                 fogad();
             }
         });
-        byte[] adat = ("join:500").getBytes(StandardCharsets.UTF_8);
+        reciveThread.setDaemon(true);
+        reciveThread.start();
+    }
+
+    public void join(String startmoney){
+        byte[] adat = ("join:"+startmoney).getBytes(StandardCharsets.UTF_8);
         send(adat);
     }
 
@@ -59,10 +64,11 @@ public class Client {
     }
 
     public void onFogad(String got){
+        System.out.printf(got+"\n");
         String[] msg = got.split(":");
         lastCommand = msg[0];
         if (msg[0].equals("joined")){
-            money = 500;
+            money = Integer.parseInt(msg[1]);
         }if(msg[0].equals("start")){
             cards.clear();
             knownCard = "";
@@ -80,7 +86,7 @@ public class Client {
         InetAddress ip = null;
         try {
             ip = Inet4Address.getByName(serverIP);
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         DatagramPacket packet = new DatagramPacket(adat,adat.length,ip,678);
