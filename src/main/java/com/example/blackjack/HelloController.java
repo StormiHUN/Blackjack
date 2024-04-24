@@ -1,6 +1,7 @@
 package com.example.blackjack;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -14,7 +15,146 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
+import java.io.IOException;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
 public class HelloController {
+
+    public Pane playerCards;
+    public Label players;
+    public ImageView serversCard;
+
+    public class Client {
+
+        String serverIP = "";
+        public int port;
+        int money;
+        public String card;
+        String color;
+        String lastCommand = "";
+       // int players = 1;
+        boolean needRefresh = false;
+
+        String knownCard = "";
+        ArrayList<String> cards = new ArrayList<String>();
+
+        Thread reciveThread = null;
+        DatagramSocket socket = null;
+
+
+        public Client(){
+            try {
+                socket = new DatagramSocket(678);
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+            reciveThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    fogad();
+                }
+            });
+            reciveThread.setDaemon(true);
+            reciveThread.start();
+        }
+
+        public void join(String startmoney){
+            byte[] adat = ("join:"+startmoney).getBytes(StandardCharsets.UTF_8);
+            cards.clear();
+            send(adat);
+        }
+
+        public void setServerIP(String targetIP){
+            serverIP = targetIP;
+        }
+
+        public void fogad(){
+            try{
+                while (true){
+                    byte[] adat = new byte[256];
+                    DatagramPacket recived = new DatagramPacket(adat, adat.length);
+                    socket.receive(recived);
+                    String msg = new String(adat,0,recived.getLength(),"utf-8");
+                    Platform.runLater(() -> onFogad(msg));
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        public void onFogad(String got){
+            System.out.printf(got+"\n");
+            String[] msg = got.split(":");
+            lastCommand = msg[0];
+            needRefresh = true;
+            if (msg[0].equals("joined")){
+                money = Integer.parseInt(msg[1]);
+                bank.setText(money+"");
+            }if(msg[0].equals("start")){
+                cards.clear();
+                knownCard = "";
+                serversCard.setImage(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
+                playerCards.getChildren().clear();
+                players.setText("Csatlakozott játékosok: "+msg[1]);
+            }if(msg[0].equals("paid")){
+                money = Integer.parseInt(msg[1]);
+                bank.setText(money+"");
+            }if(msg[0].equals("s")){
+                knownCard = msg[1];
+                serversCard.setImage(new Image(getClass().getResourceAsStream("cards/"+knownCard+".png")));
+            }if(msg[0].equals("k")){
+                cards.add(msg[1]);
+                ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+msg[1]+".png")));
+                card.setFitWidth(200);
+                card.setFitHeight(300);
+                card.setX(10+60*(cards.size()-1));
+                playerCards.getChildren().add(card);
+            }
+        }
+
+        public void send(byte[] adat){
+            InetAddress ip = null;
+            try {
+                ip = Inet4Address.getByName(serverIP);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            DatagramPacket packet = new DatagramPacket(adat,adat.length,ip,678);
+            try {
+                socket.send(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void stake(int bet){
+            money-=bet;
+            byte[] adat = ("bet:"+bet).getBytes(StandardCharsets.UTF_8);
+            send(adat);
+        }
+
+        public void hit(){
+            byte[] adat = "hit".getBytes(StandardCharsets.UTF_8);
+            send(adat);
+        }
+
+        public void stand(){
+            byte[] adat = "stand".getBytes(StandardCharsets.UTF_8);
+            send(adat);
+        }
+
+        public void leave(){
+            byte[] adat = "exit".getBytes(StandardCharsets.UTF_8);
+            send(adat);
+        }
+
+        public void changeColor(String newColor){
+            color = newColor;
+        }
+
+    }
 
     public Arc table;
     public Label bank;
@@ -51,154 +191,61 @@ public class HelloController {
 
     public void initialize(){
 
-        pane.getChildren().add(makeCircle(0,"#000000"));
         player = new Client();
         player.setServerIP(serverIp.getText());
 
-        if(player != null){
-            System.out.printf(getColor(clientColor));
-            pane.getChildren().add(makeCircle(1,getColor(clientColor)));
 
-        }
-
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                refreshScreen();
-            }
-        };
-        timer.start();
 
     }
 
 
-    public void refreshScreen(){
-        if(!player.needRefresh) return;
-        player.needRefresh = false;
-        String com = player.lastCommand;
-        if (com.equals("joined")){
-            bank.setText(player.money+"");
-        }if(com.equals("start")){
-            makeCircle(0,"#000000");
-            ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.knownCard+".png")));
-            card.setX(posX[0]-30);
-            card.setY(posY[0]+120);
-            card.setFitHeight(120);
-            card.setFitWidth(60);
-            pane.getChildren().add(card);
-            card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
-            card.setX(posX[0]+30);
-            card.setY(posY[0]+120);
-            card.setFitHeight(120);
-            card.setFitWidth(60);
-            pane.getChildren().add(card);
-            if(player.players > 1){
-                for(int i = 2; i < player.players; i++){
-                    makeCircle(i,"#000000");
-                    card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
-                    card.setX(posX[i]);
-                    card.setY(posY[i]);
-                    card.setRotate(30);
-                    card.setFitHeight(60);
-                    card.setFitWidth(30);
-                    pane.getChildren().add(card);
-                    card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
-                    card.setX(posX[i]);
-                    card.setY(posY[i]);
-                    card.setRotate(-30);
-                    card.setFitHeight(60);
-                    card.setFitWidth(30);
-                    pane.getChildren().add(card);
-                }
-            }
-        }if(com.equals("paid")){
-            bank.setText(player.money+"");
-        }if(com.equals("s")){
-            ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.knownCard+".png")));
-            card.setX(posX[0]-20);
-            card.setY(posY[0]+40);
-            card.setFitHeight(60);
-            card.setFitWidth(30);
-            pane.getChildren().add(card);
-            card = new ImageView(new Image(getClass().getResourceAsStream("cards/gray_back.png")));
-            card.setX(posX[0]+20);
-            card.setY(posY[0]+40);
-            card.setFitHeight(60);
-            card.setFitWidth(30);
-            pane.getChildren().add(card);
-        }if(com.equals("k")){
-            for(int i = 0; i < player.cards.size(); i++){
-                ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+player.cards.get(i)+".png")));
-                card.setX(-40+posX[1]+20*i);
-                card.setY(posY[1]-100);
-                card.setFitHeight(120);
-                card.setFitWidth(60);
-                //card.setRotate(40*i);
-                pane.getChildren().add(card);
-            }
-        }
-    }
 
     public void stake5() {
         if(isClient.isSelected()){
             player.stake(5);
         }
-        refreshScreen();
     }
 
     public void stake25() {
         if(isClient.isSelected()){
             player.stake(25);
         }
-        refreshScreen();
-
     }
 
     public void stake50() {
         if(isClient.isSelected()){
             player.stake(50);
         }
-        refreshScreen();
-
     }
 
     public void stake100() {
         if(isClient.isSelected()){
             player.stake(100);
         }
-        refreshScreen();
-
     }
 
     public void onHitClick() {
         if(isClient.isSelected()){
             player.hit();
         }
-        refreshScreen();
-
     }
 
     public void onStandClick() {
         if (isClient.isSelected()){
             player.stand();
         }
-        refreshScreen();
-
     }
 
     public void onLeaveClick() {
         if (isClient.isSelected()){
             player.leave();
         }
-        refreshScreen();
-
     }
 
     public void onAllInClick() {
         if(isClient.isSelected()){
             player.stake(player.money);
         }
-        refreshScreen();
     }
 
 

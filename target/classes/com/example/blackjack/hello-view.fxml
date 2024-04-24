@@ -5,32 +5,40 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <VBox fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="60.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.blackjack.HelloController">
    <children>
-      <Pane fx:id="pane">
+      <HBox spacing="10.0">
          <children>
-            <Arc fx:id="table" layoutX="300.0" length="180.0" radiusX="300.0" radiusY="300.0" startAngle="180.0" stroke="BLACK" strokeType="INSIDE" type="ROUND">
-               <fill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.062745101749897" green="0.5803921818733215" blue="0.1411764770746231" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="0.017909357324242592" green="0.2763157784938812" blue="0.052363548427820206" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </fill></Arc>
+            <VBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgray;">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Pane fx:id="playerCards" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
+               <children>
+                  <Label fx:id="players" text="Csatlakozott játékosok: " />
+                  <Label text="Osztó ismert lapja:">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ImageView fx:id="serversCard" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@cards/gray_back.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
          </children>
-      </Pane>
+      </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: lightgray; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),10,0,0,0);">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
