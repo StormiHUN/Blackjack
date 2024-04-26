@@ -131,6 +131,7 @@ public class HelloController {
 
         public void stake(int bet){
             money-=bet;
+            bank.setText(money+"");
             byte[] adat = ("bet:"+bet).getBytes(StandardCharsets.UTF_8);
             send(adat);
         }
@@ -148,10 +149,6 @@ public class HelloController {
         public void leave(){
             byte[] adat = "exit".getBytes(StandardCharsets.UTF_8);
             send(adat);
-        }
-
-        public void changeColor(String newColor){
-            color = newColor;
         }
 
     }
