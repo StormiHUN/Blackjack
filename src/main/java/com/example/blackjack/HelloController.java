@@ -97,6 +97,7 @@ public class HelloController {
             }if(msg[0].equals("paid")){
                 money = Integer.parseInt(msg[1]);
                 bank.setText(money+"");
+                startmoney.setText(money+"");
             }if(msg[0].equals("s")){
                 knownCard = msg[1];
                 serversCard.setImage(new Image(getClass().getResourceAsStream("cards/"+knownCard+".png")));
@@ -111,6 +112,7 @@ public class HelloController {
             }if(msg[0].equals("balance")){
                 money = Integer.parseInt(msg[1]);
                 bank.setText(money+"");
+                startmoney.setText(money+"");
             }
         }
 
