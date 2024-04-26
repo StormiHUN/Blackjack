@@ -29,12 +29,8 @@ public class HelloController {
     public class Client {
 
         String serverIP = "";
-        public int port;
         int money = 1000;
-        public String card;
-        String color;
         String lastCommand = "";
-       // int players = 1;
         boolean needRefresh = false;
 
         String knownCard = "";
@@ -107,10 +103,14 @@ public class HelloController {
             }if(msg[0].equals("k")){
                 cards.add(msg[1]);
                 ImageView card = new ImageView(new Image(getClass().getResourceAsStream("cards/"+msg[1]+".png")));
+                card.setY(50);
                 card.setFitWidth(200);
                 card.setFitHeight(300);
                 card.setX(10+60*(cards.size()-1));
                 playerCards.getChildren().add(card);
+            }if(msg[0].equals("balance")){
+                money = Integer.parseInt(msg[1]);
+                bank.setText(money+"");
             }
         }
 
@@ -154,7 +154,6 @@ public class HelloController {
     }
 
     public Label bank;
-    public RadioButton isClient;
     public TextField serverIp;
     public Button hitButton;
     public Button standButton;
@@ -173,51 +172,38 @@ public class HelloController {
     }
 
     public void stake5() {
-        if(isClient.isSelected()){
-            player.stake(5);
-        }
+        player.stake(5);
     }
 
     public void stake25() {
-        if(isClient.isSelected()){
-            player.stake(25);
-        }
+        player.stake(25);
+
     }
 
     public void stake50() {
-        if(isClient.isSelected()){
-            player.stake(50);
-        }
+        player.stake(50);
+
     }
 
     public void stake100() {
-        if(isClient.isSelected()){
-            player.stake(100);
-        }
+        player.stake(100);
+
     }
 
     public void onHitClick() {
-        if(isClient.isSelected()){
-            player.hit();
-        }
+        player.hit();
     }
 
     public void onStandClick() {
-        if (isClient.isSelected()){
-            player.stand();
-        }
+        player.stand();
     }
 
     public void onLeaveClick() {
-        if (isClient.isSelected()){
-            player.leave();
-        }
+        player.leave();
     }
 
     public void onAllInClick() {
-        if(isClient.isSelected()){
-            player.stake(player.money);
-        }
+        player.stake(player.money);
     }
 
 
