@@ -165,10 +165,6 @@ public class HelloController {
 
     Client player = null;
 
-    int[] posX = {300, 300, 200, 100, 400, 500};
-    int[] posY = {000, 300, 200, 100, 200, 300};
-
-
     public void initialize(){
 
         player = new Client();
