@@ -30,7 +30,7 @@ public class HelloController {
 
         String serverIP = "";
         public int port;
-        int money;
+        int money = 1000;
         public String card;
         String color;
         String lastCommand = "";
