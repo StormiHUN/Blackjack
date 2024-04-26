@@ -156,18 +156,14 @@ public class HelloController {
 
     }
 
-    public Arc table;
     public Label bank;
     public RadioButton isClient;
-    public ToggleGroup modes;
     public TextField serverIp;
     public Button hitButton;
     public Button standButton;
     public Button allInButton;
     public Button leaveButton;
     public VBox main;
-    public Pane pane;
-    public ColorPicker clientColor;
     public TextField startmoney;
 
     Client player = null;
@@ -175,30 +171,13 @@ public class HelloController {
     int[] posX = {300, 300, 200, 100, 400, 500};
     int[] posY = {000, 300, 200, 100, 200, 300};
 
-    public String getColor(ColorPicker color){
-        return String.format("#%02x%02x%02x",(int)(color.getValue().getRed()*255),(int)(color.getValue().getGreen()*255),(int)(color.getValue().getBlue()*255));
-    }
-
-    public Circle makeCircle(int position, String color){
-        Circle circle = new Circle();
-        circle.setRadius(50);
-        circle.setCenterX(posX[position]);
-        circle.setCenterY(posY[position]);
-        circle.setFill(Color.valueOf(color));
-        circle.toFront();
-        return circle;
-    }
 
     public void initialize(){
 
         player = new Client();
         player.setServerIP(serverIp.getText());
 
-
-
     }
-
-
 
     public void stake5() {
         if(isClient.isSelected()){
@@ -248,12 +227,6 @@ public class HelloController {
         }
     }
 
-
-    public void onSzinClick() {
-        pane.getChildren().remove(pane.getChildren().size()-1);
-        pane.getChildren().add(makeCircle(1,getColor(clientColor)));
-        player.changeColor(getColor(clientColor));
-    }
 
     public void onJoinClick() {
         player.setServerIP(serverIp.getText());
