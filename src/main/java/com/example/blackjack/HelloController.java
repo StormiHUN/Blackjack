@@ -113,6 +113,8 @@ public class HelloController {
                 money = Integer.parseInt(msg[1]);
                 bank.setText(money+"");
                 startmoney.setText(money+"");
+            }if(msg[0].equals("end")){
+                send("ok zsido".getBytes(StandardCharsets.UTF_8));
             }
         }
 
